@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AbsListView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +25,9 @@ class MainFragment : Fragment() {
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
+    private var themeChanged = false
+
+    private lateinit var movieListAdapter: MovieListAdapter
 
     companion object {
         fun newInstance() = MainFragment()
@@ -51,14 +55,44 @@ class MainFragment : Fragment() {
             actionbar.findViewById<DayNightSwitch>(R.id.swb_nightMode).setIsNight(true)
         }
 
-        viewModel.getUpcomingList(1);
+        var scrollDown: Boolean
+        var page = 1
+
+        if (!themeChanged) {
+            viewModel.getUpcomingList(page)
+        }
         viewModel.upcomingList.observe(viewLifecycleOwner) {
+            scrollDown = true
+            binding.prgLoading.visibility = View.GONE
             it?.also { response ->
-                val body = response.body()!!
-                Log.i("LOG", "upcoming body: $body")
-                val movieListAdapter = MovieListAdapter(body.results)
+                if (page > 1) {
+                    movieListAdapter.setUpdatedList(response)
+                } else {
+                    movieListAdapter = MovieListAdapter(response)
+                }
                 binding.grdMovie.apply {
                     adapter = movieListAdapter
+
+                    setOnScrollListener(object : AbsListView.OnScrollListener {
+                        override fun onScroll(
+                            view: AbsListView?,
+                            firstVisibleItem: Int,
+                            visibleItemCount: Int,
+                            totalItemCount: Int
+                        ) {
+                            if (firstVisibleItem + visibleItemCount >= totalItemCount && scrollDown) {
+                                binding.prgLoading.visibility = View.VISIBLE
+                                scrollDown = false
+                                page++
+                                viewModel.getUpcomingList(page)
+                                Toast.makeText(activity, "end of grid view", Toast.LENGTH_LONG).show()
+                                // End has been reached
+                            }
+                        }
+
+                        override fun onScrollStateChanged(view: AbsListView?, scrollState: Int) {
+                        }
+                    })
                 }
             } ?: Log.i("LOG", "value is null")
         }
@@ -66,7 +100,7 @@ class MainFragment : Fragment() {
         return root
     }
 
-    fun addCustomActionBarLayout(): Toolbar {
+    private fun addCustomActionBarLayout(): Toolbar {
         val cActivity = activity as AppCompatActivity
         val actionBar: ActionBar? = cActivity.supportActionBar
         if (cActivity.supportActionBar?.isShowing == false) {
@@ -97,6 +131,7 @@ class MainFragment : Fragment() {
         parent.setContentInsetsAbsolute(0, 0)
 
         actionbarMainView.findViewById<DayNightSwitch>(R.id.swb_nightMode).setListener {
+            themeChanged = true
             if (it) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             } else {

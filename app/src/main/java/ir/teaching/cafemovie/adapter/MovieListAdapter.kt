@@ -11,8 +11,12 @@ import ir.teaching.cafemovie.data.Result
 import ir.teaching.cafemovie.databinding.MoviesItemLayoutBinding
 
 internal class MovieListAdapter(
-    private val movieList: List<Result>
+    private var movieList: List<Result>
 ) : BaseAdapter() {
+
+    fun setUpdatedList(movieList: List<Result>) {
+        this.movieList = movieList
+    }
 
     override fun getCount(): Int {
         return movieList.size
