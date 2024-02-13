@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -106,4 +107,12 @@ class MainFragment : Fragment() {
         return actionbarMainView
     }
 
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            binding.grdMovie.numColumns = 6
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            binding.grdMovie.numColumns = 3
+        }
+    }
 }
