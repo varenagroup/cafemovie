@@ -1,11 +1,11 @@
 package ir.teaching.cafemovie.ui.main
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CompoundButton
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -13,7 +13,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.switchmaterial.SwitchMaterial
+import com.vimalcvs.switchdn.DayNightSwitch
 import ir.teaching.cafemovie.R
 import ir.teaching.cafemovie.adapter.MovieListAdapter
 import ir.teaching.cafemovie.databinding.FragmentMainBinding
@@ -42,7 +42,13 @@ class MainFragment : Fragment() {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-//        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        val actionbar = addCustomActionBarLayout()
+
+        val nightModeFlags = requireContext().resources.configuration.uiMode and
+                Configuration.UI_MODE_NIGHT_MASK
+        if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
+            actionbar.findViewById<DayNightSwitch>(R.id.swb_nightMode).setIsNight(true)
+        }
 
         viewModel.getUpcomingList(1);
         viewModel.upcomingList.observe(viewLifecycleOwner) {
@@ -51,13 +57,10 @@ class MainFragment : Fragment() {
                 Log.i("LOG", "upcoming body: $body")
                 val movieListAdapter = MovieListAdapter(body.results)
                 binding.grdMovie.apply {
-//                    setExpand(true)
                     adapter = movieListAdapter
                 }
             } ?: Log.i("LOG", "value is null")
         }
-
-        addCustomActionBarLayout()
 
         return root
     }
@@ -92,17 +95,11 @@ class MainFragment : Fragment() {
         val parent: Toolbar = actionbarMainView.parent as Toolbar
         parent.setContentInsetsAbsolute(0, 0)
 
-        actionbarMainView.findViewById<SwitchMaterial>(R.id.swb_nightMode).setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                // setting theme to night mode
+        actionbarMainView.findViewById<DayNightSwitch>(R.id.swb_nightMode).setListener {
+            if (it) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                buttonView.text = "Night Mode"
-                buttonView.setTextColor(cActivity.resources.getColor(R.color.movie_title_dark_mode, null))
             } else {
-                // setting theme to light theme
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                buttonView.text = "Light Mode"
-                buttonView.setTextColor(cActivity.resources.getColor(R.color.black, null))
             }
         }
 
