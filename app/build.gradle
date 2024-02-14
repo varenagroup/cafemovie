@@ -55,9 +55,6 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'
 
-    // Theme
-    implementation 'com.github.vimalcvs:Day-Night-Switch:1.0.3'
-
     // Test
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

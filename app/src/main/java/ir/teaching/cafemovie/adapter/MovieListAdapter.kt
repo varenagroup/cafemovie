@@ -1,6 +1,5 @@
 package ir.teaching.cafemovie.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,8 +46,8 @@ internal class MovieListAdapter(
 
         val result = movieList[position];
 
-        Log.i("LOG", "poster path: ${result.poster_path}")
-        holder.binding.imgMovie.load("https://media.themoviedb.org/t/p/w220_and_h330_face${result.poster_path}") {
+        holder.binding.imgMovie.load("https://media.themoviedb.org/t/p/w220_and_h330_face${result.poster_path}")
+        {
             placeholder(R.mipmap.no_poster_placeholder)
         }
         holder.binding.txtTitle.text = result.title

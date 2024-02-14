@@ -6,7 +6,6 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
-import retrofit2.http.Path
 import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient.Builder
@@ -22,7 +21,6 @@ interface MovieApi {
     object RetrofitInstance {
 
         private val okHttpClient: OkHttpClient = Builder()
-//            .addInterceptor(ConnectivityInterceptor())
             .readTimeout(12, TimeUnit.SECONDS)
             .connectTimeout(12, TimeUnit.SECONDS)
             .build()
@@ -36,5 +34,4 @@ interface MovieApi {
                 .create(MovieApi::class.java)
         }
     }
-
 }

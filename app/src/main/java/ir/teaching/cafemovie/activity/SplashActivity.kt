@@ -14,11 +14,11 @@ import ir.teaching.cafemovie.ui.main.MainViewModel
 
 class SplashActivity : AppCompatActivity() {
 
-    private lateinit var binding:  ActivitySplashBinding
+    private lateinit var binding: ActivitySplashBinding
     private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+//        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)

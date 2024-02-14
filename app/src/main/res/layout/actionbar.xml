@@ -1,31 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <com.vimalcvs.switchdn.DayNightSwitch
-        android:layout_width="56dp"
-        android:layout_height="28dp"
-        android:gravity="center"
-        android:layout_marginLeft="16dp"
-        android:id="@+id/swb_nightMode"/>
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="Discover"
-        android:textColor="@color/title_dark_mode"/>
+        android:textColor="@color/title_dark_mode"
+        android:textSize="24sp" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/img_rules"
-        android:layout_gravity="end"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
+        android:layout_height="37dp"
+        android:layout_gravity="end"
         android:layout_marginRight="16dp"
-        android:src="@mipmap/bazaar_logo"/>
+        android:adjustViewBounds="true"
+        android:src="@mipmap/bazaar_logo" />
 
 </androidx.appcompat.widget.Toolbar>
